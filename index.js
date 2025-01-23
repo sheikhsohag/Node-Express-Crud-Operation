@@ -23,6 +23,17 @@ app.get('/',(req, res)=>{
     res.send("Hello from Node api server Updated! Yes it is");
 })
 
+app.get('/api/products', async (req, res)=>{
+    try{
+        const products = await Product.find();
+        res.status(200).json(products);
+    }
+    catch(err){
+        res.status(500).json({message: "Internal Server Errors"});
+    }
+
+})
+
 app.post('/api/products', async (req, res)=>{
     try{
        const product  = await Product.create(req.body);
@@ -32,6 +43,7 @@ app.post('/api/products', async (req, res)=>{
         res.status(500).json({message: err.message});
     }
 })
+
 
 mongoose
 .connect('mongodb+srv://sheikhsohag000:2ZPftFuLHQQf2uLu@backenddb.oag6h.mongodb.net/Node-API?retryWrites=true&w=majority')
