@@ -23,6 +23,16 @@ app.get('/',(req, res)=>{
     res.send("Hello from Node api server Updated! Yes it is");
 })
 
+app.get('/api/product/:id', async (req, res)=>{
+    try{
+        const products = await Product.findById(req.params.id);
+        res.status(200).json(products);
+    }
+    catch(err){
+        res.status(500).json({message: "Internal Server Errors"});
+    }
+
+})
 app.get('/api/products', async (req, res)=>{
     try{
         const products = await Product.find();
@@ -43,6 +53,29 @@ app.post('/api/products', async (req, res)=>{
         res.status(500).json({message: err.message});
     }
 })
+
+app.put('/api/products/update/:id', async (req, res) => {
+    try {
+     
+      const updatedData = await Product.findByIdAndUpdate(
+        req.params.id,               
+        { $set: { price: req.body.price } }, 
+        { new: true }               
+      );
+  
+   
+      if (!updatedData) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+   
+      res.status(200).json(updatedData);
+    } catch (err) {
+      console.error("Error updating product:", err);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+  
 
 
 mongoose
