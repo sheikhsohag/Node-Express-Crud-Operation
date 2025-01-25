@@ -75,6 +75,33 @@ app.put('/api/products/update/:id', async (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
+
+  app.delete('/api/products/delete/:id', async (req, res) => {
+    try {
+      // Validate the ObjectId
+      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: "Invalid Product ID" });
+      }
+  
+      // Find and delete the product
+      const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+  
+      // If the product doesn't exist, send a 404 response
+      if (!deletedProduct) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      // Respond with the deleted product
+      res.status(200).json({
+        message: "Product deleted successfully",
+        product: deletedProduct,
+      });
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+  
   
 
 
