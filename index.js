@@ -33,6 +33,6 @@ app.use("/api/products", productRoute);
 
 
 mongoose
-.connect('mongodb+srv://sheikhsohag000:2ZPftFuLHQQf2uLu@backenddb.oag6h.mongodb.net/Node-API?retryWrites=true&w=majority')
+.connect('mongobdconnection string')
 .then(()=>console.log('connection successful!'))
 .catch((err)=>console.log(err));
